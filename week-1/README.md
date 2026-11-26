@@ -1,1 +1,0 @@
-this is week 1. Date -> 20/11/2026
