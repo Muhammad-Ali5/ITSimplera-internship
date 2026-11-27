@@ -21,7 +21,7 @@ def valid_row(source_id="SRC-001"):
         "year": "2024",
         "type": "research article",
         "tier": "T2",
-        "url_or_doi": "https://example.org/source",
+        "url_or_doi": "https://doi.org/10.1234/example",
         "licence": "Access terms to be checked",
         "crops": "wheat",
         "diseases": "leaf rust",
