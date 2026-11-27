@@ -31,9 +31,13 @@ Every record was located through live searches of academic databases and publish
 | Explicitly Pakistan-focused studies | 6 |
 | Pakistan-relevant (South-Asia / CIMMYT / PK co-authors) | +3 |
 
-## 3. Papers by crop and disease (coverage matrix)
+## 3. Disease coverage audit against the official internship brief
 
-All 18 required diseases have at least one source.
+**Important: the current 30-row draft does not yet demonstrate coverage of all 18 required diseases.** The disease names in parts of the earlier coverage matrix were not aligned with Section 3 of the official brief. Do not use the earlier claim that all 18 diseases are covered.
+
+The official brief requires: Rice R1–R6 (Rice Blast, Bacterial Leaf Blight, Sheath Blight, Brown Spot, False Smut, Rice Tungro); Wheat W1–W6 (Leaf Rust, Stripe Rust, Stem Rust, Powdery Mildew, Spot Blotch, Loose Smut); Cotton C1–C6 (Cotton Leaf Curl Disease, Bacterial Blight, Root Rot, Boll Rot, Anthracnose, Myrothecium Leaf Spot).
+
+The current CSV includes several mismatches. Examples include cotton Fusarium Wilt and Verticillium Wilt, which are not among the six cotton diseases in the brief; wheat Fusarium Head Blight and Septoria, which are not among the six wheat diseases; and insufficient clear records for some required diseases. These entries must be reassigned only when the paper genuinely covers the required disease, otherwise replaced. Do not relabel papers to force coverage.
 
 | Crop | Disease | Source IDs | # |
 |---|---|---|---:|
@@ -96,3 +100,12 @@ Additional Pakistan/South-Asia relevance: WHEAT-007 (CIMMYT, warm-humid South As
 
 - **Rice Tungro (RICE-009, RICE-010)** and **Cotton Leaf Curl Disease (COTTON-001, COTTON-002)** are **viral** — the `notes` field explicitly states they **cannot be cured with fungicides or bactericides**; management is vector control (green leafhopper / whitefly) plus resistant varieties.
 - Experimental fungicide/botanical results (e.g., RICE-002, COTTON-008) are flagged as experimental, **not** approved recommendations.
+
+
+## 9. Acceptance status
+
+- 30 data rows are present in the draft CSV (10 per crop).
+- All records are marked `pending`; none is certified as human-verified.
+- Some author lists and licence terms are incomplete or unconfirmed.
+- Disease coverage must be corrected against the official 18-disease list before this research deliverable can be accepted.
+- The CSV validator checks structure and duplicate identifiers/DOIs; it does not prove bibliographic authenticity, paper relevance, or licence correctness.
