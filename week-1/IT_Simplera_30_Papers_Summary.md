@@ -1,6 +1,6 @@
 # IT Simplera Crop Disease Assistant — 30 Papers Summary
 
-One entry per source. **Research-assist output — every item needs human verification (verification_status = pending).** Full metadata in `IT_Simplera_Week1_30_Research_Sources.csv`.
+One entry per source. **Research-assist draft only. All entries are pending human verification. This draft has disease-scope mismatches against the official brief, so do not treat it as completed disease coverage or ingest it as an approved knowledge base.** Full metadata in `knowledge/source_register.csv`.
 
 ---
 
