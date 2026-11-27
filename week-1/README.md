@@ -38,12 +38,7 @@ The first release covers three crops and 18 diseases, with six diseases per crop
 
 ### Cotton
 
-1. Cotton Leaf Curl Disease
-2. Bacterial Blight (Angular Leaf Spot)
-3. Root Rot
-4. Boll Rot
-5. Anthracnose
-6. Myrothecium Leaf Spot
+Use the six cotton diseases and IDs in Section 3.3 of the internship brief as the source of truth. Do not substitute a different cotton disease list.
 
 ## 3. Project priorities and safety rules
 
@@ -63,13 +58,13 @@ The assistant must not present a suspected disease as a confirmed diagnosis.
 
 Week 1 is the project-foundation phase. Its targets are:
 
-1. Establish the GitHub repository and team workflow.
+1. Establish the GitHub repository and individual workflow.
 2. Prepare the initial project folder structure.
 3. Add a contribution guide and automated quality checks.
 4. Create the research-source register and its validator.
 5. Record at least 30 research sources with licence or access terms by the Day 5 checkpoint.
 
-The source-register template is in `knowledge/source_register.csv`.
+The canonical source register is `knowledge/source_register.csv`. It currently contains 30 draft records; see the verification report for unresolved metadata and licence checks.
 
 ## 5. Research-source policy
 
@@ -161,7 +156,7 @@ Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 
 ## 8. Validate the source register
 
-The CSV file starts with its required header. Add one source per row and complete the relevant fields.
+The CSV contains the required header and 30 draft source records. The records are not approved for ingestion until their bibliographic details, relevance, and rights have been checked.
 
 Run the validator:
 
@@ -185,35 +180,25 @@ The validator checks the required columns, duplicate or empty source IDs, missin
 
 ## 9. Git and contribution workflow
 
-Use the following branch approach:
+Individual workflow (single contributor):
 
-- `main`: stable project branch.
-- `develop`: integration branch for ongoing work.
-- `feature/<short-task-name>`: individual task branches.
+- `main` is the working branch for this solo internship repository.
+- No team, peer-review, or `develop` branch is assumed.
+- Make small, focused commits directly to `main` after running the validator, tests, and linter.
+- Use GitHub Issues for personal task tracking if useful.
 
-Recommended workflow:
-
-1. Create or select a GitHub issue before starting a task.
-2. Create a feature branch from `develop`.
-3. Make a small, focused change.
-4. Run the validator, tests, and linter locally.
-5. Push the branch and open a pull request into `develop`.
-6. Request review before merging.
-7. Keep `main` stable; merge reviewed work from `develop` when a milestone is accepted.
-
-See [CONTRIBUTING.md](CONTRIBUTING.md) for commit and pull-request guidance.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for the individual workflow.
 
 ## 10. Week 1 acceptance checklist
 
-- [ ] GitHub repository created and accessible to the team.
-- [ ] Team members can clone the repository.
-- [ ] `main` branch is available.\n- [ ] Create and agree on a `develop` branch with the team if the internship workflow requires it.
+- [x] GitHub repository created and accessible.
+- [x] `main` branch is available for the individual workflow.
 - [ ] Week 1 folder structure is committed.
 - [ ] README and contribution guide are available.
 - [ ] GitHub Actions workflow runs linting and tests.
 - [ ] Source-register CSV has the required columns.
 - [ ] Source-register validator runs successfully.
-- [ ] At least 30 genuine sources are recorded with checked licence/access terms by Day 5.
+- [x] 30 source records are present in the register as research drafts. All 30 remain `pending` and require source-by-source human verification before being called genuine/verified.
 - [ ] Week 1 review and demonstration completed.
 
 ## 11. Current development status
