@@ -1,0 +1,3 @@
+snapshot_id,authority,list_type,official_page_url,linked_file_url_or_name,access_date,snapshot_filename,sha256,publication_or_update_date,notes,verification_status
+DPP-REG-2026-11-27,Department of Plant Protection Pakistan,Registered pesticides,https://plantprotection.gov.pk/services/pesticide-registration/list-of-registered-pesticides-in-pakistan/,,2026-11-27,,,,Capture the actual linked registered product list; landing-page visit alone is not a saved snapshot.,pending
+DPP-BAN-2026-11-27,Department of Plant Protection Pakistan,Banned pesticides,https://plantprotection.gov.pk/services/pesticide-registration/list-of-banned-pesticides-in-pakistan/,,2026-11-27,,,,Capture the actual linked banned chemical list; landing-page visit alone is not a saved snapshot.,pending
