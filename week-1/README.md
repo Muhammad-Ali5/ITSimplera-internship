@@ -2,7 +2,7 @@
 
 An evidence-grounded agricultural advisory assistant for rice, wheat, and cotton in Pakistan.
 
-> **Project status:** Week 1 foundation. This repository currently contains project documentation, the research-source register template, a source-register validator, basic tests, and GitHub Actions CI. The ingestion pipeline, OCR, disease knowledge cards, retrieval system, LangGraph agent, image classifier, API, and user interface are planned for later phases and are not implemented in Week 1.
+> **Project status:** Week 1 foundation. The Week 1 foundation includes project documentation, a research-source register template, a source-register validator, tests, a contribution guide, and GitHub Actions CI. The 30-source research target is tracked separately and is not complete until the entries have been researched and checked. The ingestion pipeline, OCR, disease knowledge cards, retrieval system, LangGraph agent, image classifier, API, and user interface are planned for later phases and are not implemented in Week 1.
 
 ## 1. Project overview
 
@@ -207,13 +207,13 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for commit and pull-request guidance.
 
 - [ ] GitHub repository created and accessible to the team.
 - [ ] Team members can clone the repository.
-- [ ] `main` and `develop` branches are available.
+- [ ] `main` branch is available.\n- [ ] Create and agree on a `develop` branch with the team if the internship workflow requires it.
 - [ ] Week 1 folder structure is committed.
 - [ ] README and contribution guide are available.
 - [ ] GitHub Actions workflow runs linting and tests.
 - [ ] Source-register CSV has the required columns.
 - [ ] Source-register validator runs successfully.
-- [ ] At least 30 sources are recorded with licence/access terms by Day 5.
+- [ ] At least 30 genuine sources are recorded with checked licence/access terms by Day 5.
 - [ ] Week 1 review and demonstration completed.
 
 ## 11. Current development status
