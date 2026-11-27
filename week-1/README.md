@@ -103,7 +103,7 @@ These are starting points, not automatically verified sources. Check availabilit
 
 ## 6. Week 1 repository structure
 
-Only the folders and files needed for the foundation phase are included at this stage:
+The project files for this phase live in `week-1/`. GitHub Actions and issue templates must live in the repository-level `.github/` directory so GitHub can discover them:
 
 ```text
 crop-disease-assistant/
