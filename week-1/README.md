@@ -156,7 +156,7 @@ Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 
 ## 8. Validate the source register
 
-The CSV contains the required header and 30 draft source records. The records are not approved for ingestion until their bibliographic details, relevance, and rights have been checked.
+The CSV contains the required header and 30 draft records. It is not yet an accepted 30-source deliverable: some records do not match the official disease scope, and bibliographic details/licence terms still need source-by-source review.
 
 Run the validator:
 
@@ -198,7 +198,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for the individual workflow.
 - [ ] GitHub Actions workflow runs linting and tests.
 - [ ] Source-register CSV has the required columns.
 - [ ] Source-register validator runs successfully.
-- [x] 30 source records are present in the register as research drafts. All 30 remain `pending` and require source-by-source human verification before being called genuine/verified.
+- [ ] 30 genuine sources matched to the official 18-disease scope, with checked licence/access terms. The current 30-row CSV is a draft, contains scope mismatches, and all records remain pending.
 - [ ] Week 1 review and demonstration completed.
 
 ## 11. Current development status
