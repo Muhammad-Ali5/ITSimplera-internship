@@ -66,3 +66,19 @@ def test_missing_licence_is_rejected(tmp_path):
     row["licence"] = ""
     write_register(path, [row])
     assert any("licence is required" in error for error in validate_register(path))
+
+
+def test_expected_source_count_is_enforced(tmp_path):
+    path = tmp_path / "source_register.csv"
+    write_register(path, [valid_row()])
+    errors = validate_register(path, expected_count=30)
+    assert any("Expected 30 populated source rows" in error for error in errors)
+
+
+def test_duplicate_doi_is_rejected(tmp_path):
+    path = tmp_path / "source_register.csv"
+    first = valid_row("SRC-001")
+    second = valid_row("SRC-002")
+    second["url_or_doi"] = first["url_or_doi"]
+    write_register(path, [first, second])
+    assert any("duplicate DOI/URL" in error for error in validate_register(path))
