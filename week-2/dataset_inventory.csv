@@ -1,0 +1,5 @@
+dataset_id,dataset_name,local_folder,source_platform,source_url,version_or_download_date,licence,licence_evidence,classes,images_total,train_count,valid_count,test_count,field_or_lab_origin,duplicates_checked,notes,inspection_status
+DS-001,Cotton Leaf Disease Dataset,Cotton Leaf Disease Dataset with S...,Datasets/,,,,, ,,,,,unknown,no,Folder and ZIP variants visible in VS Code screenshot; inspect README/source page and avoid counting extracted and ZIP copies twice.,pending
+DS-002,long-diseases,long-diseases,Datasets/,,,,,,,,,,,unknown,no,Folder visible in screenshot; inspect contents and metadata to identify crop/classes.,pending
+DS-003,rice_ninja,rice_ninja,Datasets/,Dataset Ninja,https://cdn.datasetninja.com/rice-disease,,,,,,,,,unknown,no,Visible train/valid/test folders plus LICENSE.md,meta.json and README.md; inspect these files and count images per class.,pending
+DS-004,rice_leaf_diseases,rice_leaf_diseases,Datasets/,,,,,,,,,,,unknown,no,Visible class folders include Bacterial leaf blight, Brown spot and Leaf smut; inspect all classes and original source/licence.,pending
