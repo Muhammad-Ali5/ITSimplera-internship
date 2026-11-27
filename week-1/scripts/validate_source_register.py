@@ -32,7 +32,7 @@ VALID_TIERS = {"T1", "T2", "T3", "T4"}
 VALID_STATUSES = {"pending", "in_review", "verified", "rejected"}
 
 
-def validate_register(path: Path = REGISTER) -> list[str]:
+def validate_register(path: Path = REGISTER, expected_count: int | None = None) -> list[str]:
     """Return validation errors. An empty list means the CSV structure is valid."""
     errors: list[str] = []
 
@@ -50,10 +50,13 @@ def validate_register(path: Path = REGISTER) -> list[str]:
             return [f"Missing required columns: {', '.join(missing_columns)}"]
 
         seen_ids: set[str] = set()
+        seen_dois: set[str] = set()
+        row_count = 0
         for line_number, row in enumerate(reader, start=2):
             if not any((value or "").strip() for value in row.values()):
                 continue
 
+            row_count += 1
             source_id = (row.get("source_id") or "").strip()
             if not source_id:
                 errors.append(f"Line {line_number}: source_id is required.")
@@ -61,6 +64,12 @@ def validate_register(path: Path = REGISTER) -> list[str]:
                 errors.append(f"Line {line_number}: duplicate source_id '{source_id}'.")
             else:
                 seen_ids.add(source_id)
+
+            doi = (row.get("url_or_doi") or "").strip().lower()
+            if doi and "doi.org/" in doi:
+                if doi in seen_dois:
+                    errors.append(f"Line {line_number}: duplicate DOI/URL '{doi}'.")
+                seen_dois.add(doi)
 
             for field in ("title", "publisher", "type", "tier", "url_or_doi", "licence",
                           "crops", "diseases", "access_date", "verification_status"):
@@ -80,11 +89,14 @@ def validate_register(path: Path = REGISTER) -> list[str]:
                     f"Use {', '.join(sorted(VALID_STATUSES))}."
                 )
 
+        if expected_count is not None and row_count != expected_count:
+            errors.append(f"Expected {expected_count} populated source rows, found {row_count}.")
+
     return errors
 
 
 def main() -> int:
-    errors = validate_register()
+    errors = validate_register(expected_count=30)
     if errors:
         print("Source register validation failed:")
         for error in errors:
