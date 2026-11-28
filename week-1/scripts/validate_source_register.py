@@ -96,7 +96,7 @@ def validate_register(path: Path = REGISTER, expected_count: int | None = None) 
 
 
 def main() -> int:
-    errors = validate_register(expected_count=30)
+    errors = validate_register(expected_count=61)
     if errors:
         print("Source register validation failed:")
         for error in errors:
