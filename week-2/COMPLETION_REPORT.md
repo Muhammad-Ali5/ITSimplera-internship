@@ -27,7 +27,7 @@
 | DPP registered/banned list snapshots | Pending | Save the actual linked files with capture date and source URL |
 | Downloaded-document hashes | Pending | Add approved URLs, download files and verify manifest rows |
 | Staging reconciliation | Pending | Reconcile 23 staging rows against the 61-row canonical register |
-| GitHub Actions Week 2 CI | Pending | Confirm the corrected workflow run is green |
+| GitHub Actions Week 2 CI | Passed on PR #2 branch | Merge the reviewed PR to bring the passing workflow changes into main |
 
 ## Important limitations
 
