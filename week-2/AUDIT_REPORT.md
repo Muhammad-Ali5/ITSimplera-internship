@@ -1,27 +1,43 @@
 # Week 2 Audit Report
 
 **Audit date:** 2026-11-28  
-**Scope:** Days 6–10, repository evidence, source register, dataset and safety records.
+**Scope:** Dataset inventory, source coverage, download/hash utility, regulatory evidence and CI.
 
 ## Findings
 
-| Requirement | Evidence | Status |
+| Area | Finding | Status |
 |---|---|---|
-| Rice Tier 1 collection | Rice records and Day 6 research notes | Partial; some pages/downloads need confirmation |
-| Wheat and cotton Tier 1 collection | Source register and Day 7 notes | Partial |
-| DPP registered and banned pesticide snapshots | `dpp_snapshot_log.csv` contains page references | Blocked; dated snapshots not captured |
-| Tier 2 gap-filling research | 61-record cumulative register and staging file | Partial; human verification outstanding |
-| Dataset inventory | Four dataset records and local inspection script | Partial; counts/licences not fully measured |
-| At least 60 cumulative sources | Canonical register has 61 unique source IDs | Count met |
-| At least three sources per official disease | `reports/disease_source_coverage.csv` | Coverage report says all 18 meet threshold |
-| Pakistan-specific sources for each crop | Coverage report and source register | Present in report; each source still requires verification |
-| SHA-256 for downloaded material | `SHA256SUMS.csv` is header-only | Blocked; no downloaded files evidenced |
+| Disease coverage | 61 register records; coverage script reports >=3 associated records for all 18 diseases | Passed metadata check |
+| Coverage meaning | Mapping is based on disease and crop text in CSV records | Human review required |
+| Pakistan source check | Uses Pakistan/institution/location markers in metadata | Human review required |
+| Dataset inventory | Four local dataset folders are listed | Actual counts pending |
+| Dataset inspection | Utility uses full-file SHA-256 for exact duplicates and writes a separate report | Ready for local run |
+| Dataset licence | Original publisher terms have not been fully reviewed | Pending |
+| DPP registered/banned lists | Landing pages are logged; dated copies of actual linked lists are absent | Pending |
+| SHA-256 manifest | No downloaded-document rows are present | Correctly empty |
+| Download helper | Output paths now resolve under `week-2/`; download list is intentionally empty until approvals | Ready after approval |
+| GitHub Actions | Latest Week 2 run failed because Ruff scanned legacy nested copies | Workflow fix required |
 
-## Register reconciliation note
-The repository contains a 61-row cumulative register in `week-2/source_register.csv`, while the original Week 1 register has 30 rows. The 61-row file retains the original 30 records and adds further records. The separate 23-row `week2_source_register_additions.csv` uses W2S-prefixed staging IDs and is not a one-to-one copy of the 31 additional records in the 61-row register. The canonical register is the cumulative source of truth; the staging file is retained for provenance and manual reconciliation.
+## Issues corrected in this review
 
-## Dataset protection
-The four dataset folders remain local and are not copied into GitHub. The inventory utility is intended to read files and produce a separate report. Do not move, rename, delete, overwrite, or modify original dataset contents.
+1. Clarified that coverage is a metadata association check, not scientific validation.
+2. Made disease-name mapping crop-aware for the shared term "bacterial blight".
+3. Improved dataset duplicate detection to hash complete files rather than only the first 64 KiB.
+4. Renamed the inventory metrics to avoid claiming image corruption when only file-read errors are detected.
+5. Corrected the download helper's output directory and manifest path.
+6. Made the download list empty by default so no source is downloaded before its access terms are checked.
+
+## Remaining evidence and risks
+
+- Review every source citation, title, author list, disease relevance and licence.
+- Run the dataset inspection utility on the actual local folders and manually review the measured report.
+- Check dataset licences before using images for training or redistribution.
+- Capture dated copies of the actual DPP registered and banned pesticide lists.
+- Reconcile the 23-row staging CSV with the cumulative 61-row register.
+- Confirm GitHub Actions after the workflow exclusion is corrected.
 
 ## Verdict
-**Week 2 is partial, not complete.** The numerical register and disease-coverage targets are represented. DPP snapshots, downloaded-document hashes, dataset measurements/licence review, and human source verification remain outstanding.
+
+**Repository preparation: substantially complete. Evidence acceptance: still partial.**
+
+No source, licence, dataset count, pesticide status, or file hash should be described as verified without its corresponding evidence.
