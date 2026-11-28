@@ -23,7 +23,9 @@ import os
 import sys
 from collections import defaultdict
 
-IMG_EXT = {".jpg", ".jpeg", ".png", ".bmp", ".gif", ".webp", ".tif", ".tiff"}
+IMG_EXT = {
+    ".jpg", ".jpeg", ".png", ".bmp", ".gif", ".webp", ".tif", ".tiff"
+}
 
 def is_img(name: str) -> bool:
     return os.path.splitext(name)[1].lower() in IMG_EXT
@@ -73,7 +75,9 @@ def inspect(root: str) -> list[dict]:
             "total_images": total,
             "classes": len([c for c in per_class if per_class[c] > 0]),
             "per_class": "; ".join(f"{k}:{v}" for k, v in sorted(per_class.items())),
-            "train": splits["train"], "valid": splits["val"] + splits["valid"], "test": splits["test"],
+            "train": splits["train"],
+            "valid": splits["val"] + splits["valid"],
+            "test": splits["test"],
             "formats": "; ".join(f"{k}:{v}" for k, v in sorted(fmts.items())),
             "likely_duplicates": dup,
             "unreadable_images": corrupt,
@@ -89,7 +93,9 @@ def main(argv: list[str]) -> int:
         print(f"Not a directory: {root}", file=sys.stderr)
         return 1
     rows = inspect(root)
-    out_csv = os.path.join(os.path.dirname(os.path.abspath(__file__)), "dataset_inventory_measured.csv")
+    out_csv = os.path.join(
+        os.path.dirname(os.path.abspath(__file__)), "dataset_inventory_measured.csv"
+    )
     with open(out_csv, "w", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=list(rows[0].keys()) if rows else
                            ["folder", "total_images", "classes", "per_class", "train",

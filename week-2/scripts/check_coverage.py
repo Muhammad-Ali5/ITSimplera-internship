@@ -30,7 +30,11 @@ NAME2ID = {
     "bacterial blight": "C2", "root rot": "C3", "boll rot": "C4",
     "anthracnose": "C5", "myrothecium leaf spot": "C6",
 }
-PK = re.compile(r"Pakistan|Punjab|Sindh|PARC|CCRI|NIAB|UAF|AARI|Faisalabad|Peshawar|Vehari|Multan|NIBGE", re.I)
+PK = re.compile(
+    r"Pakistan|Punjab|Sindh|PARC|CCRI|NIAB|UAF|AARI|"
+    r"Faisalabad|Peshawar|Vehari|Multan|NIBGE",
+    re.I,
+)
 
 
 def disease_ids(value: str) -> set[str]:
@@ -53,7 +57,9 @@ def main() -> int:
     coverage = {d: {"sources": set(), "t1": set(), "t2": set(), "pk": set()} for d in ids}
     for record in records:
         crop = (record.get("crops") or "").lower()
-        evidence = " ".join(record.get(k, "") or "" for k in ("title", "notes", "publisher", "authors"))
+        evidence = " ".join(
+            record.get(k, "") or "" for k in ("title", "notes", "publisher", "authors")
+        )
         disease_text = record.get("diseases", "") or ""
         matched = disease_ids(disease_text)
         # Resolve generic disease names by crop to avoid assigning cotton blight to rice.
@@ -70,16 +76,21 @@ def main() -> int:
     OUT.parent.mkdir(parents=True, exist_ok=True)
     with OUT.open("w", encoding="utf-8", newline="") as handle:
         writer = csv.writer(handle)
-        writer.writerow(["disease_id", "crop", "disease_name", "total_unique_sources", "T1_sources",
-                         "T2_sources", "Pakistan_specific_sources", "coverage_status", "missing_requirements"])
+        writer.writerow([
+            "disease_id", "crop", "disease_name", "total_unique_sources", "T1_sources",
+            "T2_sources", "Pakistan_specific_sources", "coverage_status",
+            "missing_requirements",
+        ])
         errors = []
         for disease_id, crop, name in OFFICIAL:
             entry = coverage[disease_id]
             count = len(entry["sources"])
             ok = count >= 3
-            writer.writerow([disease_id, crop, name, count, len(entry["t1"]), len(entry["t2"]),
-                             len(entry["pk"]), "MEETS (>=3)" if ok else "BELOW MIN",
-                             "" if ok else f"needs {3-count} more"])
+            writer.writerow([
+                disease_id, crop, name, count, len(entry["t1"]), len(entry["t2"]),
+                len(entry["pk"]), "MEETS (>=3)" if ok else "BELOW MIN",
+                "" if ok else f"needs {3-count} more",
+            ])
             if not ok:
                 errors.append(f"{disease_id} {name}: {count} sources, need at least 3")
     if len(records) < 60:
