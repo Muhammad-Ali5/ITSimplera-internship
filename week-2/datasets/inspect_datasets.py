@@ -68,7 +68,18 @@ def inspect_dataset(folder: Path) -> dict[str, object]:
         if split:
             splits[split] += 1
 
-        class_name = parent_parts[-1] if parent_parts else "(root)"
+        if split:
+            split_index = next(
+                index for index, part in enumerate(parent_parts)
+                if part.lower() == split
+            )
+            class_name = (
+                parent_parts[split_index + 1]
+                if split_index + 1 < len(parent_parts)
+                else "(no class folder)"
+            )
+        else:
+            class_name = parent_parts[-1] if parent_parts else "(root)"
         per_class[class_name] += 1
 
         digest = file_sha256(path)
