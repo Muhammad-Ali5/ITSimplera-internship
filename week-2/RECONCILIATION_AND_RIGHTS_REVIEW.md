@@ -70,3 +70,43 @@ DPP binary snapshots and hashes: **not captured**.
 Final CI: **not confirmed**.
 
 Week 2 must not be represented as fully evidence-accepted until the official DPP spreadsheet is captured from DPP (or confirmed directly by DPP), binary snapshots are archived and hashed, source rights are approved, and CI passes.
+
+
+## Critical regulatory update discovered on 2026-11-29
+
+A current news report published 26 November 2026 says the federal government notified the abolition of DPP effective **1 December 2026**, with pesticide regulatory functions transferring to the National Agri-trade and Food Safety Authority (NAFSA). It reports that the Ministry notification was issued 25 November 2026 and that the Agricultural Pesticides Ordinance, 1971 and Pakistan Plant Quarantine Act, 1976 are to be repealed from that date. This is a time-sensitive legal transition claim sourced to secondary reporting, not a directly inspected Gazette notification. See:
+https://profit.pakistantoday.com.pk/2026/11/26/government-sets-december-1-deadline-to-abolish-dpp-transfers-regulatory-powers-to-nafsa
+
+**Operational implication:** this project must not hard-code DPP as the permanently current authority. Until the effective date and implementation are confirmed from the Gazette/Ministry/NAFSA, retain DPP pages as the historical/legacy register source and add an authority-transition check. From 1 December 2026, check NAFSA's official portal or notification for the successor live register and banned list. A 30 January 2025 DPP spreadsheet is historical snapshot evidence only, not proof of current registrations on 29 November 2026.
+
+The official DPP page was crawled today and still describes Form-1, Form-16 and Form-17 lists:
+https://plantprotection.gov.pk/services/pesticide-registration/list-of-registered-pesticides-in-pakistan/
+The official banned-list landing page is also still indexed:
+https://plantprotection.gov.pk/services/pesticide-registration/list-of-banned-pesticides-in-pakistan/
+The DPP downloads page lists pesticide rules, forms and SRO registration documents:
+https://plantprotection.gov.pk/downloads/pesticide-registration/
+The pages being visible does not prove the department remains the competent authority after the notified transfer date.
+
+A 2026 SBP environmental and social management framework reproduces an indicative DPP banned-pesticide extract. It is useful corroboration but is explicitly an indicative extract, not the official current list:
+https://www.sbp.org.pk/assets/document/RAM_s_Environmental%2C_Health_and_Safety_Guidelines_-_September_2026.pdf
+
+## Snapshot status correction
+
+The DPP banned-list PDF URL is now identified:
+https://plantprotection.gov.pk/wp-content/uploads/2021/07/LIST-OF-BANNED-PESTICIDES-26-PRODUCTS.pdf
+
+Search indexing exposed its title and content, but a binary download into this runtime failed. The registered-products spreadsheet link was not exposed by the official page text. No SHA-256 has been computed. Therefore, both files remain **not archived**. The correct completion path is:
+1. preserve the official DPP list page and its actual linked file URL;
+2. archive the file bytes with access timestamp and SHA-256;
+3. verify the successor authority transition and whether NAFSA has issued a replacement/updated list;
+4. keep the historical DPP snapshot separate from the post-transition current register.
+
+Do not treat a file linked from a secondary website as the official register unless its provenance and integrity are independently established.
+
+## Current legal-source hierarchy for pesticide status
+
+1. Gazette of Pakistan / Ministry notification establishing the authority transfer and effective date.
+2. NAFSA official register and notices after the effective transfer date, once published.
+3. Archived DPP Form-1/Form-16/Form-17 and banned lists as historical records, with dates.
+4. Provincial agriculture extension bulletins for crop-specific advice, cross-checked against the federal registration and product label.
+5. Secondary news and institutional extracts only as discovery/corroboration, never as the sole basis for a product recommendation.
