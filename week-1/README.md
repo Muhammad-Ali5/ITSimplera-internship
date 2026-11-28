@@ -12,6 +12,13 @@
 
 Week 1 establishes the repository, an individual Git workflow, the initial project structure, research-source tracking, automated validation, tests, and GitHub Actions.
 
+### Week 1 documentation
+
+- [COMPLETION_REPORT.md](COMPLETION_REPORT.md) — requirements checklist, testing results, decision
+- [ARCHITECTURE.md](ARCHITECTURE.md) — Week‑1 validation subsystem + planned full system
+- [TECHNOLOGY_STACK.md](TECHNOLOGY_STACK.md) — tools used vs planned
+- [AUDIT_REPORT.md](AUDIT_REPORT.md) — requirements → evidence → status
+
 ---
 
 ## 1. Project overview
@@ -160,7 +167,7 @@ source_id,title,authors,publisher,year,type,tier,url_or_doi,licence,crops,diseas
 <details>
 <summary><strong>Read the current 30-source status</strong></summary>
 
-The register currently contains **30 draft records**. This meets the numerical row count, but it does **not** mean that all 30 papers have been independently authenticated or approved for ingestion.
+The register reached **30 draft records** at the Day‑5 Week‑1 checkpoint, and now holds **61** after the Week‑2 source merge (see [week‑2 documentation](../week-2/README.md)). This meets the numerical row counts, but it does **not** mean the papers have been independently authenticated or approved for ingestion — all records remain `pending`/`in_review`.
 
 The research audit identifies records that still need source-by-source checks, including exact bibliographic metadata, alignment with the official 18-disease scope, and licence/access conditions. All records must remain pending or in review until those checks are completed.
 
@@ -224,7 +231,7 @@ Run all three checks before committing changes.
 - Required metadata fields are populated.
 - Source tiers use T1, T2, T3, or T4.
 - Verification status uses an allowed value.
-- The current Week 1 register has 30 populated rows.
+- The register has the expected number of populated rows (30 at the Week‑1 checkpoint; 61 cumulative after the Week‑2 merge — the validator's expected count is updated accordingly).
 
 **Important:** Passing the validator checks CSV structure and basic consistency. It does not prove that a paper exists, that its details are correct, or that its licence permits reuse. Those require research and human review.
 
@@ -304,7 +311,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for the complete individual workflow.
 | Automated tests | pytest test suite | Done |
 | GitHub Actions workflow | Repository-level workflow file | Done |
 | Successful CI run | Latest checked run completed successfully | Done |
-| 30 research records logged | 30 draft rows present | Recorded, verification pending |
+| 30 research records logged | 30 at Week‑1 checkpoint (61 cumulative after Week 2) | Recorded, verification pending |
 | Source authenticity and rights | Research audit still identifies items to verify | In progress |
 | Week 1 final review | Depends on completing source checks | Pending |
 
