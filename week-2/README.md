@@ -36,7 +36,7 @@ Organize the available crop datasets, map research records to the 18 official di
 - The cumulative register has 61 populated records.
 - The coverage script reports at least three associated records for each of the 18 official disease IDs.
 - The local Ruff check passed after the import and regular-expression style fixes.
-- Week 2 GitHub Actions previously failed because Ruff also scanned legacy files under `week-1/New folder/`. The workflow exclusion is being corrected separately.
+- Week 2 GitHub Actions passed on the merged `main` branch after correcting Ruff exclusions and the dataset-inspector import.
 
 The coverage script checks the metadata in the register. It does not prove that a paper's contents support each disease association, that source details are accurate, or that reuse is permitted.
 
