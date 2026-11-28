@@ -27,7 +27,14 @@ USAGE
 (from the repo root, or adjust REPO_ROOT below.)
 """
 from __future__ import annotations
-import csv, hashlib, os, sys, datetime, urllib.request, urllib.error
+
+import csv
+import datetime
+import hashlib
+import os
+import sys
+import urllib.error
+import urllib.request
 
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # week-2/
 SUMS = os.path.join(REPO_ROOT, "SHA256SUMS.csv")

@@ -30,11 +30,11 @@ NAME2ID = {
     "bacterial blight": "C2", "root rot": "C3", "boll rot": "C4",
     "anthracnose": "C5", "myrothecium leaf spot": "C6",
 }
-PK = re.compile(r"Pakistan|Punjab|Sindh|PARC|CCRI|NIAB|UAF|AARI|Faisalabad|Peshawar|Vehari|Multan|NIBGE", re.I)
+PK = re.compile(r"Pakistan|Punjab|Sindh|PARC|CCRI|NIAB|UAF|AARI|Faisalabad|Peshawar|Vehari|Multan|NIBGE", re.IGNORECASE)
 
 
 def disease_ids(value: str) -> set[str]:
-    found = set(re.findall(r"\b[RWC][1-6]\b", value, re.I))
+    found = set(re.findall(r"\b[RWC][1-6]\b", value, re.IGNORECASE))
     lower = value.lower()
     for name, disease_id in NAME2ID.items():
         if name in lower:
