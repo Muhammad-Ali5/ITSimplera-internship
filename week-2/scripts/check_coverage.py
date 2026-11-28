@@ -75,7 +75,10 @@ def disease_ids(disease_text: str, crop_text: str) -> set[str]:
     if "bacterial blight" in text:
         found.discard("C2")
         found.discard("R2")
-        found.add("C2" if "cotton" in crop else "R2")
+        if "cotton" in crop:
+            found.add("C2")
+        if "rice" in crop:
+            found.add("R2")
 
     return found & OFFICIAL_IDS
 
