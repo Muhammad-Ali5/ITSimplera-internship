@@ -16,7 +16,7 @@
 | DPP registered/banned lists | Landing pages are logged; dated copies of actual linked lists are absent | Pending |
 | SHA-256 manifest | No downloaded-document rows are present | Correctly empty |
 | Download helper | Output paths now resolve under `week-2/`; download list is intentionally empty until approvals | Ready after approval |
-| GitHub Actions | Latest Week 2 run failed because Ruff scanned legacy nested copies | Workflow fix required |
+| GitHub Actions | Week 2 CI passed on PR #2 after Ruff exclusions and the unused import fix | Passed on PR branch; merge to main pending |
 
 ## Issues corrected in this review
 
@@ -38,6 +38,6 @@
 
 ## Verdict
 
-**Repository preparation: substantially complete. Evidence acceptance: still partial.**
+**Repository preparation: complete for this phase. Evidence acceptance: still partial.**
 
 No source, licence, dataset count, pesticide status, or file hash should be described as verified without its corresponding evidence.
