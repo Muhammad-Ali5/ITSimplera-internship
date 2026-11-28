@@ -1,43 +1,44 @@
 # Week 2 Completion Report
 
 **Phase:** Days 6-10  
-**Decision:** **Core repository work complete; evidence acceptance remains partial.**
+**Decision:** **Research expanded; final evidence acceptance remains partial.**  
+**Scope:** Text-based agricultural knowledge only. Image classification, machine-learning models, image datasets and image diagnosis are excluded.
 
-## Completed repository work
+## Completed
 
 | Deliverable | Evidence | Result |
 |---|---|---|
-| Official crop/disease scope | 3 crops and 18 disease IDs in coverage checker | Complete |
-| Cumulative source register | Week 1 canonical CSV | 61 records |
-| Disease coverage report | `reports/disease_source_coverage.csv` | All 18 meet the metadata threshold of 3 |
-| Coverage validation | `scripts/check_coverage.py` | Passed locally |
-| Dataset inventory structure | Four dataset rows in master CSV | Created; measurements pending |
-| Dataset inspection utility | `datasets/inspect_datasets.py` | Created; local run pending |
-| SHA-256 helper | `fetch_and_hash.py` | Path handling corrected; no approved downloads configured |
-| DPP evidence log | `dpp_snapshot_log.csv` | Created; snapshots pending |
-| Week 2 documentation | README, architecture, technology stack, audit, completion report | Created |
+| Crop/disease scope | Project brief | Rice, wheat, cotton; 18 diseases |
+| Initial canonical register | Week 1 source register | 61 records before deep audit |
+| Deep research additions | W2V-001 through W2V-012 in canonical register on this branch | 12 records added; in_review |
+| Institutional source research | IRRI, CIMMYT, CCRI, Punjab Agriculture, AARI, PARC and DPP source leads | Located and partly inspected |
+| Pakistan peer-reviewed research | APS, Pakistan Journal of Phytopathology, PubMed and AARI-hosted papers | Multiple citations confirmed; rights/full text review varies |
+| Disease coverage tooling | `scripts/check_coverage.py` | Existing 18-disease metadata check passed before latest additions |
+| Download/hash tooling | `fetch_and_hash.py` and `SHA256SUMS.csv` | Ready; no unapproved downloads configured |
+| Research report | `RESEARCH_VERIFICATION_REPORT.md` | Added |
+| Text-only scope | README, audit and completion report | ML/image work removed from Week 2 scope |
 
-## Outstanding acceptance evidence
+## Acceptance blockers
 
-| Requirement | Current status | What closes it |
+| Requirement | Status | What closes it |
 |---|---|---|
-| Human source verification | Pending | Check each citation, bibliographic details, disease relevance and access |
-| Dataset measurements | Pending | Run the inventory utility on the four local dataset folders |
-| Dataset licence review | Pending | Read each dataset's original source page and licence file |
-| DPP registered/banned list snapshots | Pending | Save the actual linked files with capture date and source URL |
-| Downloaded-document hashes | Pending | Add approved URLs, download files and verify manifest rows |
-| Staging reconciliation | Pending | Reconcile 23 staging rows against the 61-row canonical register |
-| GitHub Actions Week 2 CI | Passed on PR #2 branch | Merge the reviewed PR to bring the passing workflow changes into main |
+| 23-row staging reconciliation | Pending | Review each W2S row and merge/correct/reject with evidence |
+| DPP registered and banned list snapshots | Pending | Save actual linked files, record URL/date/name and compute SHA-256 |
+| Full source/rights audit | Partial | Confirm each DOI, authors, content relevance and exact licence/access condition |
+| Disease-specific source quality | Partial | Verify that >=3 sources genuinely support each disease, not just metadata tags |
+| Pakistan-specific source per crop | Partial | Confirm crop-specific Pakistan field/extension evidence and record it explicitly |
+| Current local management advice | Partial | Find current Pakistan extension sources, especially loose smut and powdery mildew |
+| Final coverage and CI | Pending | Re-run coverage, Ruff and GitHub Actions after reconciliation |
+| Image dataset inventory | Excluded | Not part of revised project scope |
 
 ## Important limitations
 
-- Three sources per disease is a register metadata threshold, not an assessment of scientific quality.
-- Pakistan-specific detection is based on text markers in source metadata and requires human confirmation.
-- Dataset counts, class distributions, duplicates, and image readability have not been measured until the local utility is run.
-- Exact duplicate detection uses full-file SHA-256 in the inventory utility; this does not establish that two different images are visually equivalent.
-- The hash manifest must remain empty until files are actually downloaded.
-- Do not redistribute source documents unless their terms permit it.
+- A source-register row is not proof that the source was read or that it supports every disease listed.
+- A DOI/abstract confirmation is not equivalent to full-text review.
+- A public webpage is not automatically licensed for bulk ingestion, redistribution or model training.
+- Historical fungicide experiments are not current Pakistan product recommendations.
+- No pesticide product or dose is approved by this report.
 
 ## Completion decision
 
-The Week 2 scripts, reports, and documentation are prepared. Week 2 should not be marked fully evidence-complete until the local dataset inspection, source/licence review, DPP snapshots, staging reconciliation, and CI confirmation are finished.
+Week 2 is not being falsely marked complete. It is ready for final evidence closure once the acceptance blockers above are resolved. The Day 9 image dataset inventory from the original brief is formally excluded under the revised text-only scope and must not be requested or run.

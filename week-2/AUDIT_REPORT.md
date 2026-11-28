@@ -1,43 +1,57 @@
 # Week 2 Audit Report
 
 **Audit date:** 2026-11-28  
-**Scope:** Dataset inventory, source coverage, download/hash utility, regulatory evidence and CI.
+**Scope:** Agricultural source collection, disease coverage, access/rights, official regulatory evidence and CI.  
+**Explicit exclusion:** Machine-learning models, image classification, image datasets and image diagnosis.
 
 ## Findings
 
 | Area | Finding | Status |
 |---|---|---|
-| Disease coverage | 61 register records; coverage script reports >=3 associated records for all 18 diseases | Passed metadata check |
-| Coverage meaning | Mapping is based on disease and crop text in CSV records | Human review required |
-| Pakistan source check | Uses Pakistan/institution/location markers in metadata | Human review required |
-| Dataset inventory | Four local dataset folders are listed | Actual counts pending |
-| Dataset inspection | Utility uses full-file SHA-256 for exact duplicates and writes a separate report | Ready for local run |
-| Dataset licence | Original publisher terms have not been fully reviewed | Pending |
-| DPP registered/banned lists | Landing pages are logged; dated copies of actual linked lists are absent | Pending |
-| SHA-256 manifest | No downloaded-document rows are present | Correctly empty |
-| Download helper | Output paths now resolve under `week-2/`; download list is intentionally empty until approvals | Ready after approval |
-| GitHub Actions | Week 2 CI passed on PR #2 after Ruff exclusions and the unused import fix | Passed on PR branch; merge to main pending |
+| Crop/disease scope | Rice, wheat, cotton; 18 disease IDs | Confirmed from project brief |
+| Initial source register | 61 rows before deep audit | Count checked |
+| Deep-audit additions | 12 additional records appended in this branch | In review; not all fully verified |
+| Disease coverage | Existing report says >=3 metadata-associated sources for all 18 diseases | Metadata check only; rerun after reconciliation |
+| Pakistan evidence | Direct Pakistan sources found for cotton disease gaps, wheat loose smut, wheat powdery mildew prevalence and rice sheath blight/BLB research | Multiple leads verified; card-level review required |
+| Source rights | Some records are open access, others have unclear or publisher-restricted terms | Per-source review required |
+| DPP registered/banned lists | Official pages identified; actual downloadable lists not archived | Pending |
+| SHA-256 manifest | No approved document-download records yet | Correctly empty |
+| Staging register | 23 W2S rows require row-by-row review | Pending |
+| Image/ML scope | Removed from Week 2 scope | Excluded by project decision |
+| CI | Earlier Week 2 branch checks passed; this deep-verification branch needs fresh CI | Pending |
 
-## Issues corrected in this review
+## Evidence quality rules
 
-1. Clarified that coverage is a metadata association check, not scientific validation.
-2. Made disease-name mapping crop-aware for the shared term "bacterial blight".
-3. Improved dataset duplicate detection to hash complete files rather than only the first 64 KiB.
-4. Renamed the inventory metrics to avoid claiming image corruption when only file-read errors are detected.
-5. Corrected the download helper's output directory and manifest path.
-6. Made the download list empty by default so no source is downloaded before its access terms are checked.
+1. A paper counts for a disease only when its actual title, abstract or full text supports that disease.
+2. A homepage or index page is a discovery lead, not a disease-specific evidence source.
+3. A Pakistan affiliation does not automatically make a study Pakistan field evidence.
+4. A research trial from another country cannot establish a Pakistan pesticide recommendation.
+5. Open access does not always mean unrestricted reuse; record the exact licence.
+6. Old sources may support taxonomy, symptoms or disease biology, but management advice must prioritize current sources.
+7. Chemical products and doses require current DPP registration and the exact official label.
+8. No unsupported details should be silently filled in. Missing author names, year, pages or rights remain review items.
+
+## Verified high-value findings
+
+- Punjab Agriculture Department publishes 2026 crop pest alerts, including rice bacterial leaf blight, brown leaf spot, sheath blight and wheat rust.
+- Punjab Agriculture Department states that crop reports are issued weekly and fortnightly.
+- APS confirms Chohan and Abid's Pakistan cotton boll-rot first report, DOI 10.1094/PDIS-02-18-0314-PDN, with field observations in southern Punjab.
+- Pakistan Journal of Phytopathology confirms Ghazanfar et al. (2023) on rice sheath blight, including its laboratory-based biocontrol/plant-extract tests.
+- PubMed confirms the 2024 rice sheath-blight study by Sunera et al., with Pakistan affiliations.
+- AARI/Punjab-hosted journal records confirm a Pakistan loose-smut trial conducted at AARI Faisalabad.
+- PubMed confirms the 2026 nationwide Pakistan wheat disease assessment. It is a broad wheat-health assessment and must not be misrepresented as disease-specific proof for every disease in the register.
 
 ## Remaining evidence and risks
 
-- Review every source citation, title, author list, disease relevance and licence.
-- Run the dataset inspection utility on the actual local folders and manually review the measured report.
-- Check dataset licences before using images for training or redistribution.
-- Capture dated copies of the actual DPP registered and banned pesticide lists.
-- Reconcile the 23-row staging CSV with the cumulative 61-row register.
-- Confirm GitHub Actions after the workflow exclusion is corrected.
+- Reconcile the 23 staged W2S records.
+- Verify the full text and source rights for each record marked in_review or pending.
+- Capture the actual linked DPP registered and banned list files, not just their landing pages.
+- Add file names, access dates and SHA-256 values after lawful downloads.
+- Re-run the disease coverage report after staging reconciliation.
+- Obtain current local extension guidance for loose smut and powdery mildew management.
+- Complete independent human review before treating any record as verified.
 
 ## Verdict
 
-**Repository preparation: complete for this phase. Evidence acceptance: still partial.**
-
-No source, licence, dataset count, pesticide status, or file hash should be described as verified without its corresponding evidence.
+**Research expansion: completed for this review. Evidence acceptance: partial.**  
+Week 2 must not be marked fully complete until the remaining evidence blockers are resolved. Image/ML dataset inventory is explicitly excluded and is not a blocker.
