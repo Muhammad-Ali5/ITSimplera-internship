@@ -1,69 +1,95 @@
-# IT Simplera Crop Disease Assistant — Week 2
+# Week 2 — Source Collection (Days 6–8)
 
-**Phase:** Collection (Days 6–10)  
-**Contributor:** Individual / solo workflow  
-**Scope:** Week 2 only. This folder does not change Week 1 or Weeks 3–8.
+IT Simplera Crop Disease Assistant · rice · wheat · cotton · 18 diseases
+**Prepared:** 2026‑11‑28 · **Status:** partial & honestly flagged (not “complete”)
 
-## What Week 2 means
+## What Week 2 covers
 
-Week 1 prepared the repository and the source-register tools. Week 2 is about collecting the actual evidence and recording the datasets that may later support the assistant.
+| Day | Focus | Deliverable report |
+|-----|-------|--------------------|
+| 6 | Rice Tier‑1 institutional sources (R1–R6) | `DAY6_RICE_COLLECTION.md` |
+| 7 | Wheat/Cotton Tier‑1 + DPP pesticide lists (W1–W6, C1–C6) | `DAY7_WHEAT_COTTON_DPP.md` |
+| 8 | Tier‑2 peer‑reviewed papers to fill gaps | `DAY8_T2_RESEARCH.md` |
 
-A link in a spreadsheet is not the same as a downloaded source. A downloaded source is not automatically reusable. We record the URL, access date, licence/access conditions and SHA-256 hash, and we do not mark a file downloaded or verified until we have checked it.
+## ⚠️ Read this first — two things that shape everything here
 
-## Official Day 6–10 tasks
+**1. This was built without access to your real project.** The desktop bridge to
+`E:\Interships\ITSamplera solutions` was offline and the GitHub repo add was
+blocked. So this folder could **not**: read your Week‑1 `source_register.csv`,
+read the existing `week-2/` folder, download institutional PDFs, or compute
+real SHA‑256 hashes. Everything here is built to be **merged in by you** after a
+quick check. Nothing is faked; gaps are labelled.
 
-| Day | Internship brief task | Evidence to keep | Completion rule |
-|---|---|---|---|
-| 6 | Download rice T1 PDFs/HTML; record hashes and access dates | Rice source collection log and SHA-256 manifest | Rice source links checked; files actually downloaded where lawful |
-| 7 | Collect wheat/cotton T1 sources; capture DPP lists | Wheat/cotton source log and dated DPP snapshots | DPP snapshots dated and documented |
-| 8 | Collect T2 papers and close research gaps | Added source-register rows and gap notes | At least one source found for each priority gap |
-| 9 | Create dataset inventory | Dataset inventory CSV and inspection notes | Licence, classes, counts and field/lab origin recorded |
-| 10 | Reach 60 registered sources and review phase | Updated Week 1 canonical source register and coverage report | At least 60 sources; at least 3 per disease; at least 1 Pakistan-specific source per crop; no unlicensed content |
+**2. Scope mismatch with Week 1.** The official internship PDF defines the 18
+diseases with IDs **R1–R6, W1–W6, C1–C6**. Your Week‑1 register was built on a
+*different* list (it used Fusarium Head Blight, Septoria, cotton Fusarium Wilt,
+Verticillium Wilt, Alternaria Leaf Spot — **none are in the official 18**, and it
+was missing Leaf Rust, Stem Rust, Boll Rot, Anthracnose, Myrothecium Leaf Spot).
+**Week 2 uses the official IDs.** You will likely want to reconcile Week 1 later
+(that touches Week‑1 files, so it is out of scope for this folder).
 
-The source register remains the canonical file at `../week-1/knowledge/source_register.csv`. Do not create a second competing register.
+## Official 18 diseases (canonical, from the PDF)
 
-## Week 2 files
+- **Rice:** R1 Rice Blast · R2 Bacterial Leaf Blight · R3 Sheath Blight · R4 Brown Spot · R5 False Smut · R6 Rice Tungro *(virus)*
+- **Wheat:** W1 Leaf Rust · W2 Stripe Rust · W3 Stem Rust · W4 Powdery Mildew · W5 Spot Blotch · W6 Loose Smut
+- **Cotton:** C1 CLCuD *(virus)* · C2 Bacterial Blight · C3 Root Rot · C4 Boll Rot · C5 Anthracnose · C6 Myrothecium Leaf Spot
 
-- `source_collection_log.csv`: official source pages and files to collect, with honest download/hash status.
-- `dpp_snapshot_log.csv`: dated record of official DPP registered/banned pesticide list snapshots.
-- `dataset_inventory.csv`: inventory of the four dataset groups visible in the user's VS Code screenshot. Counts and licence fields are intentionally pending until local inspection.
-- `SHA256SUMS.csv`: file hash manifest. Add entries only after downloading the actual files.
-- `WEEK2_PROGRESS.md`: daily checklist and explanations.
+## Folder layout (this deliverable)
 
-## How to calculate a SHA-256 hash (Windows PowerShell)
-
-After downloading a source file into `week-2/sources/`, run:
-
-```powershell
-Get-FileHash .\week-2\sources\your-file.pdf -Algorithm SHA256
+```
+week-2/
+├── README.md                              (this file)
+├── DAY6_RICE_COLLECTION.md
+├── DAY7_WHEAT_COTTON_DPP.md
+├── DAY8_T2_RESEARCH.md
+├── WEEK2_PROGRESS.md
+├── SHA256SUMS.csv                         (header only — 0 downloads here, by design)
+├── week2_source_register_additions.csv    (23 new sources, register schema; MERGE into your canonical register)
+├── scripts/
+│   └── fetch_and_hash.py                  (run on YOUR machine to download + hash)
+└── sources/                               (created by the helper script when you run it)
+    ├── rice/{pdfs,html}/
+    ├── wheat/{pdfs,html}/
+    ├── cotton/{pdfs,html}/
+    └── dpp/
 ```
 
-Copy the returned hash into `SHA256SUMS.csv`. A hash identifies the exact file bytes; it does not prove the scientific quality or licence of the source.
+## The source register
 
-## Important research rules
+`week2_source_register_additions.csv` uses the **exact** required columns:
 
-1. Use the official source page or publisher/repository record, not a random re-upload.
-2. Confirm title, authors, publisher, year and the actual crop/disease relevance.
-3. Record the exact licence or access terms. “Free to read” does not automatically mean “free to redistribute”.
-4. Do not upload copyrighted PDFs to GitHub unless the licence permits redistribution. Keep lawful local copies and commit metadata/hashes when redistribution is not allowed.
-5. Do not invent source metadata, page numbers, file hashes, dataset counts, image origins or licences.
-6. Prefer recent sources for management advice. Older material can support background biology but must be flagged.
-7. Chemical recommendations require current official registration and label checks. Do not use this collection log as a pesticide recommendation.
-8. Dataset folders are not proof of a dataset's licence. Inspect the dataset's own README, metadata and source page.
+```
+source_id,title,authors,publisher,year,type,tier,url_or_doi,licence,crops,diseases,pages_used,language,access_date,verified_by,verification_status,notes
+```
 
-## Initial authoritative starting points
+- **23 rows** — 13 Tier‑1 institutional + 10 Tier‑2 papers.
+- `source_id` uses a **`W2S-` prefix** so it cannot collide with your Week‑1 IDs
+  (which this environment could not read). **Renumber to your `SRC-###` scheme
+  when merging**, after a duplicate‑DOI check.
+- `verification_status`: `in_review` (9) = publisher/DOI metadata + abstract
+  retrieved this session; `pending` (14) = page unreachable here or index‑only.
+  `verified_by` = “AI‑assisted research; requires human review” for **all** rows.
+- All 18 official disease IDs are referenced.
 
-- IRRI rice disease fact sheets: https://www.knowledgebank.irri.org/training/fact-sheets/pest-management/diseases
-- IRRI diagnostic guide: https://www.knowledgebank.irri.org/images/docs/diagnostic-of-common-diseases-of-rice.pdf
-- CIMMYT wheat field-identification guide: https://repository.cimmyt.org/entities/publication/98c26921-80bc-4003-8c26-419fc1bf557c
-- CCRI Plant Pathology: https://ccri.gov.pk/pathology.html
-- CCRI Annual Progress Report 2023–24: https://ccri.gov.pk/Annual%20Report%202023-2024.pdf
-- Pakistan DPP registered pesticide list: https://plantprotection.gov.pk/services/pesticide-registration/list-of-registered-pesticides-in-pakistan/
-- Pakistan DPP banned pesticide list: https://plantprotection.gov.pk/services/pesticide-registration/list-of-banned-pesticides-in-pakistan/
-- Punjab Agriculture Department crop forecasts: https://agripunjab.punjab.gov.pk/pw_forecast
+### To merge (suggested)
+1. Open your canonical `week-1/knowledge/source_register.csv`.
+2. For each `W2S-` row, check its `url_or_doi` isn’t already present (no dup DOIs).
+3. Renumber `W2S-00n` → your next `SRC-###`.
+4. Append; keep `verification_status` as given until a human verifies.
 
-These are starting points. Each individual publication/download and its access terms still need to be checked.
+## How to reproduce the collection work
 
-## Week 2 status
+- **Verify pages / metadata:** open each `url_or_doi` in the additions CSV.
+- **Download + hash documents:** `python scripts/fetch_and_hash.py` on a machine
+  with open network. It writes `sources/.../` and fills `SHA256SUMS.csv` with
+  real `sha256` + sizes. Add the DPP list URL to the script once you locate it.
 
-Week 2 is **in progress**. This folder is a tracking scaffold, not a claim that all Day 6–10 acceptance checks are already complete. See [WEEK2_PROGRESS.md](WEEK2_PROGRESS.md).
+## Progress & outstanding
+See `WEEK2_PROGRESS.md`. Headline outstanding item: **capture the DPP registered
+and banned pesticide lists** — the chemical‑safety gate depends on it and it
+could not be fetched here.
+
+## Non‑negotiables honoured
+No invented papers, authors, DOIs, licences or hashes. No source marked
+`verified`. Viral diseases (R6, C1) flagged “no fungicide/bactericide cure”. No
+pesticide names/doses invented. Week‑1 and later‑week files untouched.

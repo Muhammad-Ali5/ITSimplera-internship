@@ -1,64 +1,58 @@
-# Week 2 progress — Days 6–10
+# Week 2 Progress
 
-Use this page to understand the task and record evidence. Work as one contributor; no team branches or peer reviews are assumed.
+**Updated:** 2026‑11‑28 · **Honest status: PARTIAL — not complete.**
 
-## Day 6 — Rice T1 collection
+## Completion status at a glance
 
-**What T1 means:** authoritative sources such as IRRI, FAO, government agriculture departments and official extension/research institutes.
+| Day | Target | Done | Not done |
+|-----|--------|------|----------|
+| 6 Rice T1 | Collect + verify + download + hash R1–R6 | Metadata for 3 T1 sources; disease IDs confirmed | IRRI fetch blocked; **no downloads/hashes**; PARC docs not located |
+| 7 Wheat/Cotton/DPP | T1 wheat+cotton; capture DPP lists | 7 wheat/cotton T1 (3 Pakistan pages verified live) | **DPP registered/banned lists NOT captured**; no downloads/hashes |
+| 8 T2 gaps | ≥1 paper per priority gap | 10 T2 papers; all official gaps have ≥1 source; 6 DOIs confirmed | some DOIs/citations still to confirm; W1/W3 thin |
 
-**What to do:** open the IRRI rice disease fact sheets and diagnostic guide, check that the links work, download only where access permits, and record the exact access date and SHA-256 hash for each local file.
+## Completed tasks (with evidence)
 
-- [ ] IRRI disease fact-sheet page checked
-- [ ] IRRI diagnostic guide link checked
-- [ ] Lawfully accessible rice files downloaded to `week-2/sources/rice/`
-- [ ] Source title, URL, access date and rights recorded in `source_collection_log.csv`
-- [ ] SHA-256 recorded in `SHA256SUMS.csv`
+- Extracted the **exact 18 diseases + IDs** from the internship PDF (§3.1–3.3).
+- Logged **23 new sources** into `week2_source_register_additions.csv` (correct
+  17‑column schema; no duplicate `source_id`; no duplicate DOI; all 18 IDs referenced).
+- **Verified live** (content retrieved this session):
+  - CCRI Reports page + Annual Report 2023‑2024 link (W2S‑009)
+  - CCRI Cotton Pathology page (W2S‑010)
+  - Sindh Agriculture “Diseases of Cotton & their control” (W2S‑011)
+  - CIMMYT “Bunt and Smut Diseases of Wheat”, incl. Loose Smut chapter + ISBN (W2S‑006)
+- **DOI + abstract retrieved** for 6 Tier‑2 papers (W2S‑015, 016, 019, 020, 021; plus Mapuranga PM review as cross‑reference).
+- Wrote Day 6/7/8 reports, README, this progress file, `SHA256SUMS.csv`
+  (header‑only, honest), and `scripts/fetch_and_hash.py`.
 
-**Understand it:** SHA-256 is a fingerprint of a file. If even one byte changes, its hash will normally change. It helps prove which exact copy you collected; it does not prove that the document is accurate.
+## Pending tasks (must be done on your machine / manually)
 
-## Day 7 — Wheat/cotton T1 and DPP snapshots
+1. **DPP pesticide lists** — capture the current **registered** list and the
+   **banned** list from `plantprotection.gov.pk`; save a dated snapshot under
+   `sources/dpp/`. *Blocker for the chemical‑safety gate.* ← highest priority
+2. **Downloads + SHA‑256** — run `scripts/fetch_and_hash.py` (IRRI diagnostic
+   PDF, CCRI AR 2023‑24, FAOLEX Rules, DPP list).
+3. **Open & confirm** IRRI pages (R1–R6 fact sheets) and CIMMYT handles 10883/1115, 10883/3219.
+4. **Confirm citations/DOIs** for AGRIS‑only / DOI‑unshown rows: W2S‑014 (C4),
+   W2S‑017 (C6), W2S‑022, W2S‑023.
+5. **Strengthen thin diseases:** dedicated Pakistan papers for **W1 Leaf Rust**
+   and **W3 Stem Rust**; a Pakistan cotton‑anthracnose and cotton‑Myrothecium
+   source would help too.
+6. **Merge** additions into the canonical register (renumber `W2S-` → `SRC-###`,
+   dedup‑check DOIs) — this is yours to do since I couldn’t read the register.
 
-- [ ] CIMMYT wheat guide record checked
-- [ ] CCRI pathology page checked
-- [ ] CCRI Annual Progress Report 2023–24 saved or access details recorded
-- [ ] DPP registered pesticide list page captured with access date
-- [ ] DPP banned pesticide list page captured with access date
-- [ ] Downloaded snapshot filenames and hashes recorded where files are downloaded
+## Evidence links (key)
 
-**Understand it:** DPP is Pakistan's Department of Plant Protection. Its official lists are regulatory references. Save dated snapshots because web pages and downloadable lists can change. Never treat an old snapshot as proof of today's registration status.
+- Internship PDF (source of truth): `IT_Simplera_Crop_Disease_Assistant_Enhanced.pdf`
+- CCRI reports: https://ccri.gov.pk/reports.html
+- CCRI pathology: https://ccri.gov.pk/pathology.html
+- Sindh Agriculture cotton diseases: https://agri.sindh.gov.pk/diseases-of-cotton-their-control
+- CIMMYT repository (Bunt & Smut): https://repository.cimmyt.org/
+- Register additions: `week2_source_register_additions.csv`
 
-## Day 8 — T2 research and gaps
+## Honest completion statement
 
-- [ ] Identify the priority disease gaps in the canonical register
-- [ ] Find peer-reviewed papers from journal/publisher pages or DOI records
-- [ ] Confirm paper title, authors, journal, year and disease relevance
-- [ ] Add new rows to `../week-1/knowledge/source_register.csv` (do not make a duplicate master register)
-- [ ] Record exact pages/sections and licence/access terms
-- [ ] Leave unconfirmed details as pending
-
-**Understand it:** T2 means peer-reviewed research papers/reviews. A DOI is a persistent identifier, but a DOI alone does not prove that a paper is peer-reviewed or relevant.
-
-## Day 9 — Dataset inventory
-
-- [ ] Inspect each dataset folder and its own README/metadata/licence
-- [ ] Count images per class, not just total files
-- [ ] Identify train/validation/test splits and duplicates if metadata permits
-- [ ] Record whether images are field or laboratory/controlled images; use `unknown` if not stated
-- [ ] Record source URL, licence and permitted use
-- [ ] Complete `dataset_inventory.csv`
-
-**Understand it:** a dataset inventory is an audit sheet. It tells us what we have, where it came from, which disease classes it contains, how many images exist, and whether we are allowed to use them. Do not infer image origin from how a photo looks.
-
-## Day 10 — 60-source checkpoint
-
-- [ ] Canonical source register has at least 60 records
-- [ ] Every one of the 18 diseases has at least 3 relevant sources
-- [ ] At least 1 Pakistan-specific source exists for rice, wheat and cotton
-- [ ] No source with prohibited/unknown reuse rights is ingested
-- [ ] Coverage report and CI checks reviewed
-
-**Understand it:** 60 total records is not enough by itself. The distribution matters: three sources for each of 18 diseases means 54 disease-linked source assignments, plus Pakistan-specific crop coverage. One source may support more than one disease only when the document genuinely covers each disease.
-
-## Final status
-
-Do not mark Week 2 complete until all Day 6–10 evidence and the Day 10 coverage checks are actually present. Blank values and pending states are honest; invented metadata is not evidence.
+Week 2 is **not complete.** Files exist and the research is genuine, but
+**(a)** no documents were downloaded or hashed in this environment, **(b)** the
+DPP pesticide lists — the most safety‑critical item — are not yet captured, and
+**(c)** merging into the canonical register and the Week‑1 scope reconciliation
+still require your action on the actual repo.
