@@ -72,3 +72,59 @@ No pesticide product or dose is approved by this report. Viral disease advice mu
 - DPP banned pesticides: https://plantprotection.gov.pk/services/pesticide-registration/list-of-banned-pesticides-in-pakistan/
 - DPP pesticide registration downloads: https://plantprotection.gov.pk/downloads/pesticide-registration/
 - Pakistan Agricultural Pesticides Rules (consolidated): https://tipp.gov.pk/ur-pk/site/display/49
+
+
+---
+
+# Research update: Pakistan-specific papers and text-only scope (2026-11-28)
+
+This addendum records additional sources inspected after the initial report. It does not upgrade every record to fully verified: full-text review, rights and scientific relevance still need to be checked where stated.
+
+## Additional directly checked records
+
+| Source | Direct evidence observed | Relevance / limitation |
+|---|---|---|
+| Ahsan et al. (2021), Pakistan rice bacterial leaf blight survey, DOI 10.17582/journal.pjar/2021/34.4.693.699 | Search result metadata and abstract-level record | Pakistan field survey; verify full text and exact bibliographic details before ingestion |
+| Ghazanfar et al. (2023), rice sheath blight, DOI 10.33866/phytopathol.035.02.0975 | Pakistan Journal of Phytopathology article page and PDF; authors, pages 387-395, abstract and lab methods visible | Pakistan study; results are primarily in-vitro biocontrol/plant-extract evidence, not a field-validated farmer prescription |
+| Sunera et al. (2024), rice sheath blight, DOI 10.1016/j.micpath.2024.107084 | PubMed record, authors, affiliations, abstract and DOI | Pakistan affiliations; full text/access rights must be reviewed |
+| Chohan & Abid (2019), cotton boll rot, DOI 10.1094/PDIS-02-18-0314-PDN | APS publisher full text and publication record | Open access first report from southern Punjab; pathogen identification and pathogenicity tests. Strong Pakistan-specific pathogen evidence |
+| Husnain et al. (2017), wheat loose smut, AARI Faisalabad | Punjab-hosted journal page/PDF, authors, abstract and trial period | Pakistan trial at AARI (2012-14); historical fungicide data must not be reused as current product advice |
+| Plex Sulá et al. (2026), nationwide wheat disease assessment, DOI 10.1094/PHYTO-11-25-0365-R | PubMed record, full authors, publication date, DOI, abstract and CC BY 4.0 status | Nationwide expert-elicitation assessment; useful national risk context, but do not map it to individual disease cards without disease-specific evidence |
+| Punjab Agriculture Department 2026 pest alerts | Official alerts page lists rice bacterial leaf blight, brown leaf spot, sheath blight, wheat rust and other crop alerts | Current official extension discovery index; open and archive each disease-specific alert PDF before extracting advice |
+| Punjab Agriculture Department pest forecasts | Official page says crop reports are issued weekly and fortnightly | A live discovery point for current crop alerts; each underlying report needs its own source record and date |
+
+## Additional sources added to the canonical register
+
+The branch now contains W2V-001 through W2V-012 in addition to the four records described in the original report. Their verification status is deliberately `in_review`. In particular:
+- W2V-005 to W2V-012 add Pakistan rice, wheat and cotton research leads.
+- W2V-010 is a nationwide wheat assessment published in November 2026. Its broad findings must not be treated as direct evidence for every wheat disease.
+- W2V-012 has author metadata intentionally marked for completion, so it is not ready for final ingestion.
+- All entries need final source-rights review.
+
+## Official Punjab sources to capture individually
+
+- 2026 Pest Alerts: https://agripunjab.gov.pk/pw_alerts
+- Forecasting of Pests and Crop Diseases: https://www.agripunjab.gov.pk/pw_forecast
+
+The alert index itself is not a substitute for each linked bulletin. Record each bulletin's exact title, date, crop, disease, PDF/HTML URL, pages used and access terms.
+
+## Revised scope: no image or ML work
+
+The original IT Simplera brief labels image classification as optional, while its core architecture is curated knowledge, OCR, Regex, hybrid RAG and LangGraph. The project scope is now explicitly text-only:
+- no machine-learning model;
+- no image classification;
+- no image dataset inventory;
+- no image diagnosis endpoint.
+
+The former Week 2 image inventory report, CSV and inspection script have been removed from this branch. This is a scope decision, not an outstanding acceptance task.
+
+## Current honest completion state
+
+Research discovery and source-register expansion are complete for this work session. Week 2 evidence acceptance remains blocked by:
+1. 23 staged W2S rows not yet reconciled;
+2. actual DPP registered/banned list files not yet captured and hashed;
+3. incomplete per-source rights and full-text checks;
+4. final disease-by-disease source validation;
+5. final coverage, Ruff and GitHub Actions run on this updated branch.
+
+Do not mark Week 2 fully complete until these are resolved. No pesticide recommendation or dose is approved.
