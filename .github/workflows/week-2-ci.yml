@@ -39,4 +39,4 @@ jobs:
         run: python week-2/scripts/check_coverage.py
 
       - name: Lint Week 1 and Week 2 scripts
-        run: ruff check --config week-1/pyproject.toml week-1 week-2/scripts week-2/datasets
+        run: ruff check --force-exclude --config week-1/pyproject.toml week-1 week-2/scripts week-2/datasets

@@ -1,30 +1,13 @@
 #!/usr/bin/env python3
-"""
-fetch_and_hash.py  —  Week 2 reproducible source downloader + hasher.
+"""Download explicitly approved Week 2 documents and record SHA-256 hashes.
 
-WHY THIS EXISTS
----------------
-The Week 2 source metadata was collected in a sandbox whose network could not
-reach institutional sites (IRRI, FAO, CCRI, DPP ...), so NO source documents
-were downloaded there and SHA256SUMS.csv was left empty of document rows.
-Run THIS script on your own machine (where the network is open) to:
-  1. download the documents that are legally downloadable,
-  2. compute their SHA-256 hashes and sizes,
-  3. write/append rows to week-2/SHA256SUMS.csv.
+Run from the repository root:
+    python week-2/fetch_and_hash.py
 
-RULES BUILT IN
---------------
-* It only downloads the URLs YOU list in DOWNLOADS below. Review each one and
-  confirm it is legally downloadable before adding it. Do NOT add paywalled /
-  copyrighted full texts you are not licensed to download.
-* It never invents a hash: if a download fails, it records status=FAILED with
-  no hash, so the evidence stays honest.
-* Re-running is safe: it rewrites SHA256SUMS.csv from scratch each run.
-
-USAGE
------
-    python scripts/fetch_and_hash.py
-(from the repo root, or adjust REPO_ROOT below.)
+Only add a URL to DOWNLOADS after checking that downloading it is permitted.
+The script stores files under week-2/sources/ and writes week-2/SHA256SUMS.csv.
+It records failed downloads without inventing a hash. It does not make any
+claim that a downloaded file may be redistributed or used for model training.
 """
 from __future__ import annotations
 
@@ -33,59 +16,111 @@ import datetime
 import hashlib
 import os
 import sys
+import tempfile
 import urllib.error
 import urllib.request
+from pathlib import Path
 
-REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # week-2/
-SUMS = os.path.join(REPO_ROOT, "SHA256SUMS.csv")
+WEEK2_DIR = Path(__file__).resolve().parent
+MANIFEST = WEEK2_DIR / "SHA256SUMS.csv"
+MAX_DOWNLOAD_BYTES = 100 * 1024 * 1024
 
-# (relative_path_to_save, url) — EDIT THIS LIST. Confirm each is legal to download.
-# Relative paths follow the week-2/sources/ layout required by the brief.
-DOWNLOADS = [
-    # --- rice (T1) ---
-    ("sources/rice/pdfs/IRRI_Diagnosis_of_Common_Diseases_of_Rice.pdf",
-     "https://www.knowledgebank.irri.org/images/docs/diagnostic-of-common-diseases-of-rice.pdf"),
-    # --- cotton (T1) ---
-    ("sources/cotton/pdfs/CCRI_Annual_Progress_Report_2023-2024.pdf",
-     "https://ccri.gov.pk/Annual Report 2023-2024.pdf"),
-    # --- pesticides / DPP & legal (T1) ---
-    ("sources/dpp/pdfs/FAOLEX_Agricultural_Pesticides_Rules_Pakistan_pak4115.pdf",
-     "https://faolex.fao.org/docs/pdf/pak4115.pdf"),
-    # Add more AFTER confirming they are legally downloadable, e.g. the DPP
-    # registered / banned pesticide list once you locate its exact URL on
-    # https://plantprotection.gov.pk/ .
-]
+# Add only documents whose download terms have been checked.
+# Keep the list empty until each document has an explicit approval decision.
+DOWNLOADS: list[tuple[str, str]] = []
 
-def sha256_of(path: str) -> tuple[str, int]:
-    h = hashlib.sha256(); size = 0
-    with open(path, "rb") as f:
-        for chunk in iter(lambda: f.read(1 << 16), b""):
-            h.update(chunk); size += len(chunk)
-    return h.hexdigest(), size
+
+def sha256_file(path: Path) -> tuple[str, int]:
+    digest = hashlib.sha256()
+    size = 0
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+            size += len(chunk)
+    return digest.hexdigest(), size
+
+
+def download_one(relative_path: str, url: str) -> tuple[str, str, str, str, str]:
+    destination = (WEEK2_DIR / relative_path).resolve()
+    if WEEK2_DIR.resolve() not in destination.parents:
+        raise ValueError(f"Destination must stay inside {WEEK2_DIR}")
+
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    timestamp = datetime.datetime.now().astimezone().isoformat(timespec="seconds")
+    request = urllib.request.Request(
+        url, headers={"User-Agent": "ITSimplera-Week2-Research/1.0"}
+    )
+
+    temporary_path: Path | None = None
+    try:
+        with urllib.request.urlopen(request, timeout=60) as response:
+            with tempfile.NamedTemporaryFile(
+                mode="wb", dir=destination.parent, delete=False
+            ) as temporary:
+                temporary_path = Path(temporary.name)
+                size = 0
+                while True:
+                    chunk = response.read(1024 * 1024)
+                    if not chunk:
+                        break
+                    size += len(chunk)
+                    if size > MAX_DOWNLOAD_BYTES:
+                        raise ValueError("Download exceeded the 100 MB safety limit")
+                    temporary.write(chunk)
+
+        digest, size = sha256_file(temporary_path)
+        os.replace(temporary_path, destination)
+        return (
+            destination.name,
+            str(destination.relative_to(WEEK2_DIR)),
+            digest,
+            str(size),
+            timestamp,
+        )
+    except (OSError, urllib.error.URLError, ValueError) as error:
+        if temporary_path and temporary_path.exists():
+            temporary_path.unlink()
+        return (
+            destination.name,
+            str(destination.relative_to(WEEK2_DIR)),
+            "",
+            "",
+            f"FAILED:{timestamp}:{error}",
+        )
+
 
 def main() -> int:
     rows = []
-    for rel, url in DOWNLOADS:
-        dest = os.path.join(REPO_ROOT, rel)
-        os.makedirs(os.path.dirname(dest), exist_ok=True)
-        now = datetime.datetime.now().astimezone().isoformat(timespec="seconds")
-        try:
-            req = urllib.request.Request(url, headers={"User-Agent": "ITSimplera-week2/1.0"})
-            with urllib.request.urlopen(req, timeout=60) as resp, open(dest, "wb") as out:
-                out.write(resp.read())
-            digest, size = sha256_of(dest)
-            rows.append([os.path.basename(rel), rel, digest, size, now])
-            print(f"OK    {rel}  ({size} bytes)")
-        except (urllib.error.URLError, OSError) as e:
-            rows.append([os.path.basename(rel), rel, "", "", f"FAILED:{now}:{e}"])
-            print(f"FAIL  {rel}  -> {e}", file=sys.stderr)
+    failures = 0
 
-    with open(SUMS, "w", newline="", encoding="utf-8") as f:
-        w = csv.writer(f)
-        w.writerow(["filename", "relative_path", "sha256", "file_size_bytes", "downloaded_at"])
-        w.writerows(rows)
-    print(f"\nWrote {SUMS} ({len(rows)} rows). Review FAILED rows and licence terms before use.")
-    return 0
+    for relative_path, url in DOWNLOADS:
+        try:
+            row = download_one(relative_path, url)
+        except ValueError as error:
+            print(f"SKIP {relative_path}: {error}", file=sys.stderr)
+            failures += 1
+            continue
+
+        rows.append(row)
+        if row[2]:
+            print(f"OK   {row[1]} ({row[3]} bytes)")
+        else:
+            failures += 1
+            print(f"FAIL {row[1]}: {row[4]}", file=sys.stderr)
+
+    with MANIFEST.open("w", newline="", encoding="utf-8") as handle:
+        writer = csv.writer(handle)
+        writer.writerow([
+            "filename", "relative_path", "sha256",
+            "file_size_bytes", "downloaded_at",
+        ])
+        writer.writerows(rows)
+
+    print(f"Wrote manifest: {MANIFEST}")
+    print(f"Successful downloads: {len(rows) - failures}; failures: {failures}")
+    print("An empty manifest is expected while DOWNLOADS has no approved entries.")
+    return 1 if failures else 0
+
 
 if __name__ == "__main__":
     raise SystemExit(main())

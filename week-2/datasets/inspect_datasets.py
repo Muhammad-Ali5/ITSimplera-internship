@@ -1,106 +1,147 @@
-"""
-inspect_datasets.py — Day 9 dataset inventory (RUN LOCALLY on your machine).
+"""Read-only inventory of image files in local Week 2 dataset folders.
 
-WHY LOCAL: the image datasets live under /Datasets/ which is gitignored and is
-NOT in the GitHub repo, and the desktop bridge to E:\\ was offline when the
-Week-2 files were prepared. So the real image counts, per-class counts, corrupt
-files and duplicates could NOT be computed remotely. This script computes them
-on your machine and fills dataset_inventory.csv with REAL numbers.
-
-It never invents numbers: it only reports what it actually finds on disk.
-
-USAGE (from the project root, with the datasets present):
+Run from the repository root:
     python week-2/datasets/inspect_datasets.py "E:\\Interships\\ITSamplera solutions\\Datasets"
 
-It writes/overwrites: week-2/datasets/dataset_inventory_measured.csv
-Review it, then copy the real values into dataset_inventory.csv.
+The script writes a separate measured CSV beside this file. It does not edit
+or move the original dataset files. Duplicate detection uses full-file SHA-256.
+The unreadable count means files that could not be read, not validated corrupt
+image files (image decoding is intentionally outside this lightweight utility).
 """
 from __future__ import annotations
 
 import csv
 import hashlib
-import os
 import sys
 from collections import defaultdict
+from pathlib import Path
 
-IMG_EXT = {".jpg", ".jpeg", ".png", ".bmp", ".gif", ".webp", ".tif", ".tiff"}
+IMAGE_EXTENSIONS = {
+    ".jpg", ".jpeg", ".png", ".bmp", ".gif", ".webp", ".tif", ".tiff",
+}
+OUTPUT = Path(__file__).resolve().with_name("dataset_inventory_measured.csv")
+FIELDNAMES = [
+    "folder", "total_images", "classes", "per_class", "train", "valid",
+    "test", "formats", "exact_duplicates", "unreadable_files",
+]
 
-def is_img(name: str) -> bool:
-    return os.path.splitext(name)[1].lower() in IMG_EXT
 
-def sha1_head(path: str, nbytes: int = 1 << 16) -> str:
-    """Cheap duplicate key: sha1 of the first 64 KiB + file size."""
+def is_image(path: Path) -> bool:
+    return path.suffix.lower() in IMAGE_EXTENSIONS
+
+
+def file_sha256(path: Path) -> str | None:
+    """Return a full-file digest, or None when the file cannot be read."""
+    digest = hashlib.sha256()
     try:
-        with open(path, "rb") as f:
-            data = f.read(nbytes)
-        return hashlib.sha1(data).hexdigest() + f"-{os.path.getsize(path)}"
+        with path.open("rb") as handle:
+            for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+                digest.update(chunk)
     except OSError:
-        return ""
+        return None
+    return digest.hexdigest()
 
-def inspect(root: str) -> list[dict]:
-    out = []
-    for entry in sorted(os.listdir(root)):
-        folder = os.path.join(root, entry)
-        if not os.path.isdir(folder):
+
+def inspect_dataset(folder: Path) -> dict[str, object]:
+    per_class: dict[str, int] = defaultdict(int)
+    formats: dict[str, int] = defaultdict(int)
+    hashes: dict[str, int] = defaultdict(int)
+    splits = {"train": 0, "val": 0, "valid": 0, "test": 0}
+    total = 0
+    unreadable = 0
+
+    for path in folder.rglob("*"):
+        if not path.is_file() or not is_image(path):
             continue
-        total = 0
-        corrupt = 0
-        per_class: dict[str, int] = defaultdict(int)
-        fmts: dict[str, int] = defaultdict(int)
-        hashes: dict[str, int] = defaultdict(int)
-        splits = {"train": 0, "val": 0, "valid": 0, "test": 0}
-        for dirpath, _dirs, files in os.walk(folder):
-            rel = os.path.relpath(dirpath, folder).lower()
-            split_hit = next((s for s in splits if s in rel.split(os.sep)), None)
-            cls = os.path.basename(dirpath)
-            for fn in files:
-                if not is_img(fn):
-                    continue
-                total += 1
-                fmts[os.path.splitext(fn)[1].lower()] += 1
-                per_class[cls] += 1
-                if split_hit:
-                    splits[split_hit] += 1
-                p = os.path.join(dirpath, fn)
-                h = sha1_head(p)
-                if not h:
-                    corrupt += 1
-                else:
-                    hashes[h] += 1
-        dup = sum(c - 1 for c in hashes.values() if c > 1)
-        out.append({
-            "folder": entry,
-            "total_images": total,
-            "classes": len([c for c in per_class if per_class[c] > 0]),
-            "per_class": "; ".join(f"{k}:{v}" for k, v in sorted(per_class.items())),
-            "train": splits["train"], "valid": splits["val"] + splits["valid"], "test": splits["test"],
-            "formats": "; ".join(f"{k}:{v}" for k, v in sorted(fmts.items())),
-            "likely_duplicates": dup,
-            "unreadable_images": corrupt,
-        })
-    return out
+
+        total += 1
+        formats[path.suffix.lower()] += 1
+        relative_parts = path.relative_to(folder).parts
+        parent_parts = relative_parts[:-1]
+
+        split = next(
+            (part.lower() for part in parent_parts
+             if part.lower() in splits),
+            None,
+        )
+        if split:
+            splits[split] += 1
+
+        if split:
+            split_index = next(
+                index for index, part in enumerate(parent_parts)
+                if part.lower() == split
+            )
+            class_name = (
+                parent_parts[split_index + 1]
+                if split_index + 1 < len(parent_parts)
+                else "(no class folder)"
+            )
+        else:
+            class_name = parent_parts[-1] if parent_parts else "(root)"
+        per_class[class_name] += 1
+
+        digest = file_sha256(path)
+        if digest is None:
+            unreadable += 1
+        else:
+            hashes[digest] += 1
+
+    duplicates = sum(count - 1 for count in hashes.values() if count > 1)
+    class_rows = "; ".join(
+        f"{name}:{count}" for name, count in sorted(per_class.items())
+    )
+    format_rows = "; ".join(
+        f"{extension}:{count}" for extension, count in sorted(formats.items())
+    )
+
+    return {
+        "folder": folder.name,
+        "total_images": total,
+        "classes": len(per_class),
+        "per_class": class_rows,
+        "train": splits["train"],
+        "valid": splits["val"] + splits["valid"],
+        "test": splits["test"],
+        "formats": format_rows,
+        "exact_duplicates": duplicates,
+        "unreadable_files": unreadable,
+    }
+
 
 def main(argv: list[str]) -> int:
-    if len(argv) < 2:
+    if len(argv) != 2:
         print(__doc__)
         return 2
-    root = argv[1]
-    if not os.path.isdir(root):
-        print(f"Not a directory: {root}", file=sys.stderr)
+
+    root = Path(argv[1]).expanduser()
+    if not root.is_dir():
+        print(f"Dataset directory not found: {root}", file=sys.stderr)
         return 1
-    rows = inspect(root)
-    out_csv = os.path.join(os.path.dirname(os.path.abspath(__file__)), "dataset_inventory_measured.csv")
-    with open(out_csv, "w", newline="", encoding="utf-8") as f:
-        w = csv.DictWriter(f, fieldnames=list(rows[0].keys()) if rows else
-                           ["folder", "total_images", "classes", "per_class", "train",
-                            "valid", "test", "formats", "likely_duplicates", "unreadable_images"])
-        w.writeheader()
-        w.writerows(rows)
-    for r in rows:
-        print(f"{r['folder']}: {r['total_images']} images, {r['classes']} classes, "
-              f"dups~{r['likely_duplicates']}, unreadable={r['unreadable_images']}")
-    print(f"\nWrote {out_csv}. Copy the real numbers into dataset_inventory.csv.")
+
+    rows = [
+        inspect_dataset(folder)
+        for folder in sorted(root.iterdir())
+        if folder.is_dir()
+    ]
+
+    with OUTPUT.open("w", newline="", encoding="utf-8") as handle:
+        writer = csv.DictWriter(handle, fieldnames=FIELDNAMES)
+        writer.writeheader()
+        writer.writerows(rows)
+
+    for row in rows:
+        print(
+            f"{row['folder']}: {row['total_images']} images, "
+            f"{row['classes']} classes, "
+            f"exact duplicates={row['exact_duplicates']}, "
+            f"unreadable files={row['unreadable_files']}"
+        )
+
+    print(f"Measured inventory written to: {OUTPUT}")
+    print("Review class names and splits manually before updating the master CSV.")
     return 0
+
 
 if __name__ == "__main__":
     raise SystemExit(main(sys.argv))
